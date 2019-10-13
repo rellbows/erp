@@ -4,5 +4,6 @@ dbcon.js
 # node modules
 node_modules/
 
-# npm generated package file
+# generated files
 package.json.lock
+.DS_Store
