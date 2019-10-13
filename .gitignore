@@ -1,0 +1,8 @@
+# db config file
+dbcon.js
+
+# node modules
+node_modules/
+
+# npm generated package file
+package.json.lock
