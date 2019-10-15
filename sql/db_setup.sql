@@ -15,7 +15,7 @@ CREATE TABLE `user` (
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   -- this column signature will store image of the users signature
-  `signature` varbinary(max) NOT NULL,
+  `signature_image_path` VARCHAR(255) NOT NULL,
   `account_created` DATETIME NOT NULL
                     DEFAULT CURRENT_TIMESTAMP,
   `department_id` int(11) DEFAULT NULL,
