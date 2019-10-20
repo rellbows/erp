@@ -1,4 +1,4 @@
-NSERT INTO `department` VALUES (1,'Computer Science', 'Kelley Engineering Center', 'Corvallis', 'OR'),
+INSERT INTO `department` VALUES (1,'Computer Science', 'Kelley Engineering Center', 'Corvallis', 'OR'),
 (2,'Information Service', 'Milne Computer Center', 'Corvallis', 'OR'), (3,'English', 'Bexell', 'Corvallis', 'OR'),
 (4,'Physics', 'Weniger Hall', 'Corvallis', 'OR');
 
