@@ -12,6 +12,8 @@ CREATE TABLE `department` (
 CREATE TABLE `user` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_type` varchar(50) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `password` varchar(255) NOT NULL,
   `first_name` varchar(255) NOT NULL,
   `last_name` varchar(255) NOT NULL,
   -- this column signature will store image of the users signature
@@ -26,7 +28,7 @@ CREATE TABLE `user` (
 
 CREATE TABLE `awards` (
   `award_id` int(11) NOT NULL AUTO_INCREMENT,
-  `message` varchar(255) NOT NULL,
+  `message` varchar(25) NOT NULL,
   `award_type` varchar(50) NOT NULL,
   `award_created` DATETIME NOT NULL
                     DEFAULT CURRENT_TIMESTAMP,
