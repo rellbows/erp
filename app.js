@@ -6,7 +6,7 @@
 // SERVER SIDE CODE
 
 var express = require('express');
-//var mysql = require('./dbcon.js');
+var mysql = require('./dbcon.js');
 var bodyParser = require('body-parser');
 
 var app = express();
@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 app.use('/static', express.static('public')); // where static .js files are served
 app.set('view engine', 'handlebars');
 app.set('port', 3000);
-//app.set('mysql', mysql);
+app.set('mysql', mysql);
 
 //brings up homepage
 app.get('/', function(req, res){
