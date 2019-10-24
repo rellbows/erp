@@ -19,14 +19,15 @@
 			<td>{{password}}</td>
 			<td>{{account_created}}</td>
 			<td><button onclick='deleteUser({{user_id}})'>Delete</td>
-			<td><a href="/admin_crud_users/{{id}}">Update</a></td>
+			<td><a href="/admin-crud-users/{{user_id}}">Update</a></td>
 		</tr>
 		{{/each}}
 	</thead>
 </table>
 
 <h3>Create New User Account</h3>
-<form name='create_user' action='/admin_crud_users' method='post'>
+<form name='create_user' action='/admin-crud-users' enctype="multipart/form-data" method='post'>
+
 	First Name:<br>
 	<input type='text' name='first_name'><br>
 	Last Name:<br>
@@ -44,11 +45,8 @@
 		{{/each}}
 	</select><br>
 
-	<!-- 
-	NEED TO RESEARCH HOW TO UPLOAD...
 	Signature:<br>
 	<input type='file' name='signature'></br>
-	-->
 
 	<input type='submit' value="Create Account">
 </form>
