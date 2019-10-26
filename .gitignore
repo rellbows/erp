@@ -2,7 +2,11 @@
 dbcon.js
 
 # node modules
-node_modules/
+node_modules/*
+
+# don't include signature files
+signatures/*
+!signatures/.gitkeep    # hack to ensure empty sig dir included...
 
 # generated files
 package.json.lock
