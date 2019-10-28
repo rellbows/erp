@@ -20,7 +20,7 @@ module.exports = function(){
 			});
 	};
 
-	// pulls the user data from db
+	// pulls all the user data from db
 	function getUsers(res, mysql, context, complete){
 		mysql.pool.query('SELECT user_id, first_name, last_name, user.email, user.password, department.dept_id, department.dept_name, account_created FROM `user` LEFT JOIN `department` ON user.department_id = department.dept_id WHERE user.user_type = "USER"', function(error, results, fields){
 
@@ -33,6 +33,20 @@ module.exports = function(){
 		});
 	};
 
+	// pulls user data from db for 1 user
+	function getUser(res, mysql, context, id, complete){
+
+		var sql = 'SELECT user_id, first_name, last_name, email, password, department_id, account_created, signature_image_path FROM user WHERE user_id = ?'
+		var inserts = [id];
+		mysql.pool.query(sql, inserts, function(error, results, fields){
+			if(error){
+				res.write(JSON.stringify(error));
+				res.end();
+			}
+			context.user = results[0];
+			complete();
+		});
+	};
 
 	// gets page for crud-users
 	router.get('/', function(req, res){
@@ -89,7 +103,7 @@ module.exports = function(){
 		});
 	}
 
-	// sends new user account info
+	// creates a user
 	router.post('/', upload.single('signature'), function(req, res, next){
 
 		// upload of sig file
@@ -141,6 +155,56 @@ module.exports = function(){
 			}
 			else{
 				res.status(202).end();
+			}
+		});
+	});
+
+	// update user page
+	router.get('/:id', function(req, res){
+
+		callBackCount = 0;
+		var context = {};
+		context.jsscripts = ['select_dept.js', 'update_user.js'];
+		var mysql = req.app.get('mysql');
+		getUser(res, mysql, context, req.params.id, complete);
+		getDepartments(res, mysql, context, complete);
+		function complete(){
+			callBackCount++;
+			if(callBackCount >= 2){
+				res.render('update_user.handlebars', context);
+			};
+		};
+	});
+
+	router.post('/:id', upload.single('signature'), function(req, res){
+
+		var file = req.file
+		var mysql = req.app.get('mysql');
+		var inserts = [];
+		var sql = '';
+		req.body.signature_image_path = '';
+
+		if(!file){
+			inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.department_id, req.params.id];
+			sql = 'UPDATE user SET first_name=?, last_name=?, email=?, password=?, department_id=? WHERE user_id=?';
+		}
+		else{
+			// TESTING
+			console.log("in file...");
+
+			req.body.signature_image_path = file.path;
+			inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.department_id, req.body.signature_image_path, req.params.id];
+			sql = 'UPDATE user SET first_name=?, last_name=?, email=?, password=?, department_id=?, signature_image_path=? WHERE user_id=?';
+		}
+
+		sql = mysql.pool.query(sql, inserts, function(error, results, fields){
+			if(error){
+				res.write(JSON.stringify(error));
+				res.end();
+			}
+			else{
+				res.status(200);
+				res.redirect('/admin-crud-users');
 			}
 		});
 	});
