@@ -1,8 +1,8 @@
 const Sequelize = require('sequelize');
 
-const sequelize = new Sequelize('test', 'root', '', {
-	host: '35.247.112.137',
-	port: '53755',
+const sequelize = new Sequelize('database', 'user', 'password', {
+	host: '',
+	port: '',
 	dialect: 'mysql',
 	dialectOptions: {
         socketPath: "/var/run/mysqld/mysqld.sock"
