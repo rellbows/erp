@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-
+//add correct credentials here
 const sequelize = new Sequelize('database', 'user', 'password', {
 	host: '',
 	port: '',
