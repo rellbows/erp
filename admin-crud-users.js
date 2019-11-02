@@ -68,15 +68,16 @@ module.exports = function(){
 
 	});
 
-	var signature_upload_setup = function(req, res, next){
+	var signature_upload = function(req, res, next){
 
-		upload.single('signature');
+		//upload.single('signature');
 
 		// upload of sig file
 		var file = req.file;
 		if(!file){
 			var error = new Error('Please upload a file');
 			error.httpStatusCode = 400;
+			error.message = 'Error: Please upload a file'
 			return next(error);
 		}
 		req.body.signature_image_path = file.path;
@@ -103,6 +104,20 @@ module.exports = function(){
 		});
 	}
 
+	// TESTING
+	router.post('/', upload.single('signature'), signature_upload, create_user_sql, function(req, res, next){
+
+		// upload signature
+		req.signature_upload;
+
+		// call to mysql db to create user middleware
+		req.create_user_sql;
+
+		res.redirect('/admin-crud-users');
+
+	});
+
+	/*
 	// creates a user
 	router.post('/', upload.single('signature'), function(req, res, next){
 
@@ -111,6 +126,7 @@ module.exports = function(){
 		if(!file){
 			var error = new Error('Please upload a file');
 			error.httpStatusCode = 400;
+			error.message = 'Error: Please upload a file'
 			return next(error);
 		}
 		req.body.signature_image_path = file.path;
@@ -140,6 +156,7 @@ module.exports = function(){
 		});
 
 	});
+	*/
 
 	// deletes a user
 	router.delete('/:id', function(req, res){
@@ -184,13 +201,13 @@ module.exports = function(){
 		var sql = '';
 		req.body.signature_image_path = '';
 
+		// no file upload
 		if(!file){
 			inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.department_id, req.params.id];
 			sql = 'UPDATE user SET first_name=?, last_name=?, email=?, password=?, department_id=? WHERE user_id=?';
 		}
+		// file upload
 		else{
-			// TESTING
-			console.log("in file...");
 
 			req.body.signature_image_path = file.path;
 			inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.department_id, req.body.signature_image_path, req.params.id];
@@ -207,6 +224,12 @@ module.exports = function(){
 				res.redirect('/admin-crud-users');
 			}
 		});
+	});
+
+	// error handling
+	router.use(function(err, req, res, next){
+		res.status(err.httpStatusCode);
+		res.send(err.message);
 	});
 
 	return router;
