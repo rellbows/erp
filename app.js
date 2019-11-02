@@ -25,9 +25,8 @@ app.get('/', function(req, res){
 	res.render('home.handlebars')
 });
 
-//admin - CRUD page
-app.use('/admin-crud-users', require('./admin-crud-users.js'));
-
+//admin - CRUD page for users
+app.use('/admin-crud-users', require('./admin-crud-users.js')); 
 
 //bad url route
 app.use(function(req, res){
