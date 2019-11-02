@@ -1,0 +1,28 @@
+<h1>Update {{user.first_name}} {{user.last_name}}</h1>
+<form id='update_user' action='/admin-crud-users/{{user.user_id}}' enctype='multipart/form-data' method='post'>
+	First Name:<br>
+	<input type='text' name='first_name' value='{{user.first_name}}'><br>
+	Last Name:<br>
+	<input type='text' name='last_name' value='{{user.last_name}}'><br>
+	Email:<br>
+	<input type='text' name='email' value='{{user.email}}'><br>
+	Password:<br>
+	<input type='password' name='password' value='{{user.password}}'><br>
+	Department:<br>
+	<select name='department_id' id='dept_selector'>
+		{{#each department}}
+		<option value='{{dept_id}}'>{{dept_name}}</option>
+		{{/each}}
+	</select><br>
+	Account Created:<br>
+	{{user.account_created}}<br>
+	Signature:<br>
+	<input type='file' name='signature'></br>
+
+	<input type='submit' value="Update Account">
+</form>
+
+<!-- Testing
+<button onclick='updateUser({{user.user_id}})'>Update</button>
+-->
+<script defer>selectDept({{department.dept_id}});</script>

@@ -8,6 +8,7 @@
 var express = require('express');
 var mysql = require('./dbcon.js');
 var bodyParser = require('body-parser');
+var multer = require('multer');
 
 var app = express();
 var handlebars = require('express-handlebars').create({defaultLayout:'main'});
@@ -24,8 +25,8 @@ app.get('/', function(req, res){
 	res.render('home.handlebars')
 });
 
-// OTHER ROUTES HERE...
-
+//admin - CRUD page for users
+app.use('/admin-crud-users', require('./admin-crud-users.js')); 
 
 //bad url route
 app.use(function(req, res){
