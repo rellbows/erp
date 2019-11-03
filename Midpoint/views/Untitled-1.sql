@@ -1,0 +1,1 @@
+update bloom.users set logins = 0 where email = 'salwamo88@gmail.com';
