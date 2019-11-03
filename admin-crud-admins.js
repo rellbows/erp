@@ -1,12 +1,16 @@
+// TODO:
+// 1. Need to get schema updated to allow for null value in
+// signature image path column
+
 module.exports = function(){
 	var express = require('express');
 	var router = express.Router();
 
 	// SQL QUERIES
 
-	// pulls all the user data from db
+	// pulls all the admin data from db
 	function getAdmins(res, mysql, context, complete){
-		mysql.pool.query('SELECT user_id, first_name, last_name, user.email, user.password, account_created FROM `user` WHERE user.user_type = "ADMIN"', function(error, results, fields){
+		mysql.pool.query('SELECT user_id, first_name, last_name, user.email, user.password, account_created, signature_image_path FROM `user` WHERE user.user_type = "ADMIN"', function(error, results, fields){
 
 			if(error){
 				res.write(JSON.stringify(error));
@@ -17,10 +21,10 @@ module.exports = function(){
 		});
 	};
 
-	// pulls user data from db for 1 user
+	// pulls admin data from db for 1 admin
 	function getAdmin(res, mysql, context, id, complete){
 
-		var sql = 'SELECT user_id, first_name, last_name, email, password, account_created, FROM user WHERE user_id = ?'
+		var sql = 'SELECT user_id, first_name, last_name, email, password, account_created, signature_image_path FROM user WHERE user_id = ?'
 		var inserts = [id];
 		mysql.pool.query(sql, inserts, function(error, results, fields){
 			if(error){
@@ -32,7 +36,7 @@ module.exports = function(){
 		});
 	};
 
-	// gets page for crud-admins
+	// gets page for admin-crud-admins
 	router.get('/', function(req, res){
 		var callBackCount = 0;
 		var context = {};
@@ -57,8 +61,12 @@ module.exports = function(){
 		// specify that it is standard user account
 		req.body.user_type = 'ADMIN';
 
-		var sql = 'INSERT INTO user (first_name, last_name, email, password, user_type) VALUES (?,?,?,?,?)';
-		var inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.user_type];
+		// admins do not have signature file
+		// have TODO to update schema so this can be null
+		req.body.signature_image_path = 'NONE';
+
+		var sql = 'INSERT INTO user (first_name, last_name, email, password, user_type, signature_image_path) VALUES (?,?,?,?,?,?)';
+		var inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.user_type, req.body.signature_image_path];
 		sql = mysql.pool.query(sql, inserts, function(error, results, fields){
 			if(error){
 				console.log(JSON.stringify(error));
@@ -74,9 +82,9 @@ module.exports = function(){
 	router.post('/', create_admin_sql, function(req, res, next){
 
 		// call to mysql db to create admin middleware
-		req.create_user_sql;
+		req.create_admin_sql;
 
-		res.redirect('/admin-crud-admins.handlebars');
+		res.redirect('/admin-crud-admins');
 
 	});
 
@@ -98,18 +106,17 @@ module.exports = function(){
 		});
 	});
 
-	// update user page
+	// update admin page
 	router.get('/:id', function(req, res){
 
 		callBackCount = 0;
 		var context = {};
-		context.jsscripts = ['select_dept.js', 'update_user.js'];
+		context.jsscripts = [];
 		var mysql = req.app.get('mysql');
-		getUser(res, mysql, context, req.params.id, complete);
-		getDepartments(res, mysql, context, complete);
+		getAdmin(res, mysql, context, req.params.id, complete);
 		function complete(){
 			callBackCount++;
-			if(callBackCount >= 2){
+			if(callBackCount >= 1){
 				res.render('update_admin.handlebars', context);
 			};
 		};
@@ -119,22 +126,11 @@ module.exports = function(){
 
 		var file = req.file
 		var mysql = req.app.get('mysql');
-		var inserts = [];
-		var sql = '';
-		req.body.signature_image_path = '';
-
-		// no file upload
-		if(!file){
-			inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.department_id, req.params.id];
-			sql = 'UPDATE user SET first_name=?, last_name=?, email=?, password=?, department_id=? WHERE user_id=?';
-		}
-		// file upload
-		else{
-
-			req.body.signature_image_path = file.path;
-			inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.department_id, req.body.signature_image_path, req.params.id];
-			sql = 'UPDATE user SET first_name=?, last_name=?, email=?, password=?, department_id=?, signature_image_path=? WHERE user_id=?';
-		}
+		inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.department_id, req.params.id];
+		sql = 'UPDATE user SET first_name=?, last_name=?, email=?, password=?, department_id=? WHERE user_id=?';
+		
+		// TODO to have the schema updated sot this can be null
+		req.body.signature_image_path = 'NONE';
 
 		sql = mysql.pool.query(sql, inserts, function(error, results, fields){
 			if(error){
@@ -143,7 +139,7 @@ module.exports = function(){
 			}
 			else{
 				res.status(200);
-				res.redirect('/admin-crud-users');
+				res.redirect('/admin-crud-admins');
 			}
 		});
 	});
