@@ -20,9 +20,9 @@ CREATE TABLE `user` (
   `signature_image_path` VARCHAR(255) NOT NULL,
   `account_created` DATETIME NOT NULL
                     DEFAULT CURRENT_TIMESTAMP,
-  `department_id` int(11) DEFAULT NULL,
   `user_token` varchar(50),
   `reset_timer` DATETIME,
+  `department_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   KEY `department_id` (`department_id`),
   CONSTRAINT `department_cons` FOREIGN KEY (`department_id`) REFERENCES `department` (`dept_id`) ON DELETE SET NULL ON UPDATE CASCADE
