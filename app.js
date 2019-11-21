@@ -26,7 +26,10 @@ app.get('/', function(req, res){
 });
 
 //admin - CRUD page for users
-app.use('/admin-crud-users', require('./admin-crud-users.js')); 
+app.use('/admin-crud-users', require('./admin-crud-users.js'));
+
+//admin - CRUD page for admins
+app.use('/admin-crud-admins', require('./admin-crud-admins.js')); 
 
 //bad url route
 app.use(function(req, res){
