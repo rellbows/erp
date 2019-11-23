@@ -1,0 +1,30 @@
+<h1>ERP - Admin - Business Intelligence</h1>
+
+<ul>
+	<a href="#">My Account</a>
+	<a href="/admin-crud-users">Create/Edit/Delete Users</a>
+	<a href="/admin-crud-admins">Create/Edit/Delete Admins</a>
+	<a href="/admin-bus-intel">Business Intelligence</a>
+	<a href="/logout">Logout<a/>
+</ul>
+
+<h3>Business Intelligence</h3>
+<p>{{award_num.total_awards}} Awards</p>
+<p>'XX' Tags Used</p>
+<p>{{awardee_num.total_awardees}} New Awardees</p>
+
+<!-- TESTING -->
+<table>
+	<thead>
+		<th>dept name</th>
+		<th>award num</th>
+	</thead>
+	<tbody>
+		{{#each num_awards_dept}}
+		<tr>
+			<td>{{dept_name}}</td>
+			<td>{{dept_total}}</td>
+		</tr>
+		{{/each}}
+	</tbody>
+<p>google chart here...</p>

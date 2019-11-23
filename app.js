@@ -29,7 +29,10 @@ app.get('/', function(req, res){
 app.use('/admin-crud-users', require('./admin-crud-users.js'));
 
 //admin - CRUD page for admins
-app.use('/admin-crud-admins', require('./admin-crud-admins.js')); 
+app.use('/admin-crud-admins', require('./admin-crud-admins.js'));
+
+//admin - business intel page
+app.use('/admin-bus-intel', require('./admin-bus-intel.js'));
 
 //bad url route
 app.use(function(req, res){
