@@ -1,60 +1,60 @@
-<h1>ERP - Admin - Create/Edit/Delete Users</h1>
+<div class="container">
+	<div class="col-sm-12 col-sm-offset-4">
+		<h1>ERP - Admin - Create/Edit/Delete Users</h1>
+	</div>
 
-<ul>
-	<a href="#">My Account</a>
-	<a href="/admin-crud-users">Create/Edit/Delete Users</a>
-	<a href="/admin-crud-admins">Create/Edit/Delete Admins</a>
-	<a href="#">Business Insight</a>
-	<a href="/logout">Logout</a>
-</ul>
+	{{> admin-navbar}}
 
-<h3>Edit/Delete Users</h3>
-<table>
-	<thead>
-		<th>First Name</th>
-		<th>Last Name</th>
-		<th>Department</th>
-		<th>Username</th>
-		<th>Password</th>
-		<th>Account Created</th>
-		<tbody>
-		{{#each users}}
-		<tr>
-			<td>{{first_name}}</td>
-			<td>{{last_name}}</td>
-			<td>{{dept_name}}</td>
-			<td>{{email}}</td>
-			<td>{{password}}</td>
-			<td>{{account_created}}</td>
-			<td><button onclick='deleteUser({{user_id}})'>Delete</td>
-			<td><a href="/admin-crud-users/{{user_id}}">Update</a></td>
-		</tr>
-		{{/each}}
-	</thead>
-</table>
+	<br />
 
-<h3>Create New User Account</h3>
-<form name='create_user' action='/admin-crud-users' enctype="multipart/form-data" method='post'>
+	<h3>Edit/Delete Users</h3>
+	<table>
+		<thead>
+			<th>First Name</th>
+			<th>Last Name</th>
+			<th>Department</th>
+			<th>Username</th>
+			<th>Password</th>
+			<th>Account Created</th>
+			<tbody>
+			{{#each users}}
+			<tr>
+				<td>{{first_name}}</td>
+				<td>{{last_name}}</td>
+				<td>{{dept_name}}</td>
+				<td>{{email}}</td>
+				<td>{{password}}</td>
+				<td>{{account_created}}</td>
+				<td><button onclick='deleteUser({{user_id}})'>Delete</td>
+				<td><a href="/admin-crud-users/{{user_id}}">Update</a></td>
+			</tr>
+			{{/each}}
+		</thead>
+	</table>
 
-	First Name:<br>
-	<input type='text' name='first_name'><br>
-	Last Name:<br>
-	<input type='text' name='last_name'><br>
+	<h3>Create New User Account</h3>
+	<form name='create_user' action='/admin-crud-users' enctype="multipart/form-data" method='post'>
 
-	Email:<br>
-	<input type='text' name='email'><br>
-	Password:<br>
-	<input type='password' name='password'><br>
+		First Name:<br>
+		<input type='text' name='first_name'><br>
+		Last Name:<br>
+		<input type='text' name='last_name'><br>
 
-	Department:<br>
-	<select name='department_id'>
-		{{#each department}}
-		<option value='{{dept_id}}'>{{dept_name}}</option>
-		{{/each}}
-	</select><br>
+		Email:<br>
+		<input type='text' name='email'><br>
+		Password:<br>
+		<input type='password' name='password'><br>
 
-	Signature:<br>
-	<input type='file' name='signature'></br>
+		Department:<br>
+		<select name='department_id'>
+			{{#each department}}
+			<option value='{{dept_id}}'>{{dept_name}}</option>
+			{{/each}}
+		</select><br>
 
-	<input type='submit' value="Create Account">
-</form>
+		Signature:<br>
+		<input type='file' name='signature'></br>
+
+		<input type='submit' value="Create Account">
+	</form>
+</div>

@@ -14,6 +14,13 @@ router.get('/', function (req, res, next) {
   var context = {};
   var mysql = req.app.get('mysql');
 
+  if(!req.session){
+    res.redirect('./login');
+    res.end();
+    return;
+
+  }
+
   /*mysql.pool.query("SELECT user_id, first_name, last_name, email, password, signature_image_path, DATE_FORMAT(account_created, '%m/%d/%Y') AS account_created" + 
       " FROM user WHERE user_id=?", [req.query.user_id], function (err, rows, fields) {*/
       mysql.pool.query("SELECT user_id, first_name, last_name, email, password, " + 
@@ -26,13 +33,14 @@ router.get('/', function (req, res, next) {
       }
       context.results = rows;
       if (rows.length == 0) {
-        res.redirect('./logout');
+        res.render('login', context);
       }else if (rows.length == 1) {
         var curVals = rows[0];
         current_user_id = curVals.user_id;
         current_user_type = curVals.user_type;
         if (current_user_type == "ADMIN"){
           res.redirect('./ADMIN-crud-users');
+          res.end();
         } else{
           res.render('userprofile', context);
         }
@@ -76,6 +84,7 @@ router.get('/update', multipartyMiddleware, function (req, res, next) {
             context.results = rows;
             //res.render('userprofile', context);
             res.redirect('../userprofile');
+            res.end();
         });
     });
       }
@@ -100,11 +109,13 @@ router.post('/upload_file', multipartyMiddleware, function(req, res, next) {
       context.results = rows;
       //res.render('userprofile', context);
       res.redirect('../userprofile');
+      res.end();
     });
   }
   else
   {
     res.redirect('../userprofile');
+    res.end();
   }
 });
 

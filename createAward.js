@@ -4,6 +4,12 @@ module.exports = function(){
 	var expressValidator = require('express-validator');
 	
 router.get('/', function(req, res){
+	if(!req.session){
+		res.redirect('./login');
+		res.end();
+		return;
+	
+	  }
 	var context = {};
     res.render('createAward', context);
 });

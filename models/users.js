@@ -1,16 +1,17 @@
 const Sequelize = require('sequelize');
 //add correct credentials here
-const sequelize = new Sequelize('database', 'user', 'password', {
-	host: '',
-	port: '',
+//const sequelize = new Sequelize('database', 'user', 'password', {
+	const sequelize = new Sequelize('capstone-cs467-2019', 'capstone-cs467-2019', 'aGSmm28LoYul3ihF', {
+	host: 'classmysql.engr.oregonstate.edu',
+	port: '3306',
 	dialect: 'mysql',
-	dialectOptions: {
-        socketPath: "/var/run/mysqld/mysqld.sock"
-    },
-	define: {
-	timestamps: false
-	},
-	//logging: console.log
+	//dialectOptions: {
+        //socketPath: "/var/run/mysqld/mysqld.sock"
+    //},
+//	define: {
+//	timestamps: false
+//	},
+//	logging: console.log
 });
 const Department = sequelize.define('department', {
 	dept_id: {
@@ -45,7 +46,8 @@ const User = sequelize.define('user', {
     allowNull: false 
 	}*/
 }, {
-    freezeTableName: true
+		freezeTableName: true,
+		timestamps: false  
 });
 
 Department.hasMany(User, {foreignKey: 'department_id'});
