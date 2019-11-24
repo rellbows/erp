@@ -4,8 +4,14 @@ module.exports = function(){
 	
 router.get('/', function(req, res){
 	//var context = {};
-//	res.render('logout', context);
-res.redirect('/login')
+	//	res.render('logout', context);
+	req.logout();
+	if (req.session) {
+        req.session.destroy(function(err) {
+            if (err) return console.log(err);
+			return res.redirect('/login');
+        });
+    }
 });
 
 return router;
