@@ -1,0 +1,71 @@
+
+{{> header }}
+
+<style>
+    body {
+        padding-top: 100px;
+    }
+</style>
+
+<body>
+    <div class="container">
+
+            <div class="col-sm-2 col-sm-offset-1">
+                <div class="text-left"> Create Award </div>
+            </div>
+            <br>
+            <hr class="style1" />
+            <br>
+            <!-- Update User Account FORM -->
+          
+             <form id="awardsform" action="/awards/update" method="get"> 
+
+              <!--<form id="formaward" method = "post" action="/awards/update" enctype="multipart/form-data"> -->
+
+						
+			<div class="text-left"> Select Award type </div>	
+			   <br>
+     <button type="button" class="btn btn-outline-light btn-space">Employee of the month</button>
+
+    <button type="button" class="btn btn-outline-dark btn-space">Employee of the week</button>
+		   <br><br>
+<!-- Search form -->
+<div class="text-left"> Search for a recipient </div>	
+ <div class="input-group">
+    <form class="example" action="action_page.php">
+  <input type="text" placeholder="Search.." name="search">
+  <button type="submit"><i class="fa fa-search"></i></button>
+  </div>
+    <br>
+<div class="text-left"> Retrieved email </div>	
+      <form class="example" action="action_page.php">
+ 		<input type="text" placeholder="Searching.." name="searching">
+    <br> <br>
+ 
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <label for="Created Date">DateTime</label>
+                        <p id="time">
+
+                        <script>
+                          document.getElementById("time").innerHTML = Date();
+                        </script>
+                        </p>
+
+                      <!--  <input type="datetime" class="form-control" id="datetime" name="account_created" placeholder="Account_created"/> -->
+                    </div>
+								
+                
+                <div class="form-row">
+                    <div class="form-group col-md-8">
+                        <button type="submit" class="btn btn-info">Create</button>
+                    </div>
+                </div>
+            </form>
+        </span>
+    </div>
+
+
+
+    <br><br>
+  
