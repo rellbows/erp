@@ -24,6 +24,8 @@ var session = require('express-session');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var User = require('./models/users.js');
+var bcrypt = require('bcrypt');
+var saltRounds = 10;
 
 app.use(session({ 
   secret: 'lol', 
@@ -82,14 +84,22 @@ passport.use(new LocalStrategy(
 				//console.log("wrong username");
 				return done(null, false, {message: 'Username is incorrect'});
 			}
-			if (!(user.password == password)){
+			if (user){
 				//console.log("wrong password");
-				return done(null, false, {message: 'Password is incorrect'});
-			}
-			if (user.password == password){
-				//console.log("correct");
-				return done(null, user, {message: 'logged in'});
-
+				bcrypt.compare(password, user.password, function(err, res) {
+    			// res == true
+				//now check if res is true if not then do not 
+				if(!res)
+					{
+						console.log("false");
+						return done(null, false, {message: 'Password is incorrect'});
+					}
+				if(res)
+					{
+						console.log("correct");
+						return done(null, user, {message: 'logged in'});
+					}
+				});
 			}
 		}).catch(err => done(err));
 	}));
