@@ -3,7 +3,8 @@ module.exports = function(){
 	var router = express.Router();
 	var multer = require('multer');
 	var upload = multer({dest: 'signatures'});
-
+	var bcrypt = require('bcrypt');
+	var saltRounds = 10;
 	// SQL QUERIES
 
 	// pulls the department data from db
@@ -90,9 +91,10 @@ module.exports = function(){
 
 		// specify that it is standard user account
 		req.body.user_type = 'USER';
-
+		bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+  		// Store hash in your password DB.
 		var sql = 'INSERT INTO user (first_name, last_name, email, password, department_id, user_type, signature_image_path) VALUES (?,?,?,?,?,?,?)';
-		var inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.department_id, req.body.user_type, req.body.signature_image_path];
+		var inserts = [req.body.first_name, req.body.last_name, req.body.email, hash, req.body.department_id, req.body.user_type, req.body.signature_image_path];
 		sql = mysql.pool.query(sql, inserts, function(error, results, fields){
 			if(error){
 				console.log(JSON.stringify(error));
@@ -101,6 +103,7 @@ module.exports = function(){
 			}else{
 				next();
 			}
+		});
 		});
 	}
 
