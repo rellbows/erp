@@ -46,6 +46,7 @@ app.get('/', function(req, res){
 // OTHER ROUTES HERE...
 
 app.use('/userprofile', require('./userprofile.js'));
+app.use('/admin-account', require('./admin-account.js'));
 app.use('/admin-crud-users', require('./admin-crud-users.js'));
 app.use('/admin-crud-admins', require('./admin-crud-admins.js'));
 app.use('/admin-bus-intel', require('./admin-bus-intel.js')); 
