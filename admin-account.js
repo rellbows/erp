@@ -21,6 +21,14 @@ module.exports = function(){
 
 	// gets page for account
 	router.get('/', function(req, res){
+
+		// check to ensure user is logged in...
+		if(req.user == undefined){
+			res.redirect('./login');
+			res.end();
+	        return;
+	    }
+
 		var callBackCount = 0;
 		var context = {};
 
