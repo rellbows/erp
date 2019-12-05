@@ -50,6 +50,14 @@ module.exports = function(){
 
 	// gets page for crud-users
 	router.get('/', function(req, res){
+
+		// check to ensure user is logged in...
+		if(req.user == undefined){
+			res.redirect('./login');
+			res.end();
+	        return;
+	    }
+
 		var callBackCount = 0;
 		var context = {};
 		context.jsscripts = ['delete_user.js'];
@@ -104,8 +112,15 @@ module.exports = function(){
 		});
 	}
 
-	// TESTING
+	// create a user
 	router.post('/', upload.single('signature'), signature_upload, create_user_sql, function(req, res, next){
+
+		// check to ensure user is logged in...
+		if(req.user == undefined){
+			res.redirect('./login');
+			res.end();
+	        return;
+	    }
 
 		// upload signature
 		req.signature_upload;
@@ -117,49 +132,15 @@ module.exports = function(){
 
 	});
 
-	/*
-	// creates a user
-	router.post('/', upload.single('signature'), function(req, res, next){
-
-		// upload of sig file
-		var file = req.file;
-		if(!file){
-			var error = new Error('Please upload a file');
-			error.httpStatusCode = 400;
-			error.message = 'Error: Please upload a file'
-			return next(error);
-		}
-		req.body.signature_image_path = file.path;
-
-		// TODO: NOT WORKING...
-		// generate timestamp
-		//var timestamp = new Date();
-		//req.body.account_created = timestamp.toUTCString();
-
-		// specify that it is standard user account
-		req.body.user_type = 'USER';
-
-		// TESTING
-		console.log(req.body);
-
-		var mysql = req.app.get('mysql');
-		var sql = 'INSERT INTO user (first_name, last_name, email, password, department_id, user_type, signature_image_path) VALUES (?,?,?,?,?,?,?)';
-		var inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.department_id, req.body.user_type, req.body.signature_image_path];
-		sql = mysql.pool.query(sql, inserts, function(error, results, fields){
-			if(error){
-				console.log(JSON.stringify(error));
-				res.write(JSON.stringify(error));
-				res.end();
-			}else{
-				res.redirect('/admin-crud-users');
-			}
-		});
-
-	});
-	*/
-
 	// deletes a user
 	router.delete('/:id', function(req, res){
+
+		// check to ensure user is logged in...
+		if(req.user == undefined){
+			res.redirect('./login');
+			res.end();
+	        return;
+	    }
 
 		var mysql = req.app.get('mysql');
 		var sql = 'DELETE FROM user WHERE user_id=?';
@@ -179,6 +160,13 @@ module.exports = function(){
 	// update user page
 	router.get('/:id', function(req, res){
 
+		// check to ensure user is logged in...
+		if(req.user == undefined){
+			res.redirect('./login');
+			res.end();
+	        return;
+	    }
+
 		callBackCount = 0;
 		var context = {};
 		context.jsscripts = ['select_dept.js', 'update_user.js'];
@@ -194,6 +182,13 @@ module.exports = function(){
 	});
 
 	router.post('/:id', upload.single('signature'), function(req, res){
+
+		// check to ensure user is logged in...
+		if(req.user == undefined){
+			res.redirect('./login');
+			res.end();
+	        return;
+	    }
 
 		var file = req.file
 		var mysql = req.app.get('mysql');

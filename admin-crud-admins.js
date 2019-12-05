@@ -38,6 +38,14 @@ module.exports = function(){
 
 	// gets page for admin-crud-admins
 	router.get('/', function(req, res){
+
+		// check to ensure user is logged in...
+		if(req.user == undefined){
+			res.redirect('./login');
+			res.end();
+	        return;
+	    }
+
 		var callBackCount = 0;
 		var context = {};
 		context.jsscripts = ['delete_user.js'];
@@ -81,6 +89,13 @@ module.exports = function(){
 	// TESTING
 	router.post('/', create_admin_sql, function(req, res, next){
 
+		// check to ensure user is logged in...
+		if(req.user == undefined){
+			res.redirect('./login');
+			res.end();
+	        return;
+	    }
+
 		// call to mysql db to create admin middleware
 		req.create_admin_sql;
 
@@ -90,6 +105,13 @@ module.exports = function(){
 
 	// deletes an admin
 	router.delete('/:id', function(req, res){
+
+		// check to ensure user is logged in...
+		if(req.user == undefined){
+			res.redirect('./login');
+			res.end();
+	        return;
+	    }
 
 		var mysql = req.app.get('mysql');
 		var sql = 'DELETE FROM user WHERE user_id=?';
@@ -109,6 +131,13 @@ module.exports = function(){
 	// update admin page
 	router.get('/:id', function(req, res){
 
+		// check to ensure user is logged in...
+		if(req.user == undefined){
+			res.redirect('./login');
+			res.end();
+	        return;
+	    }
+
 		callBackCount = 0;
 		var context = {};
 		context.jsscripts = [];
@@ -123,6 +152,13 @@ module.exports = function(){
 	});
 
 	router.post('/:id', function(req, res){
+
+		// check to ensure user is logged in...
+		if(req.user == undefined){
+			res.redirect('./login');
+			res.end();
+	        return;
+	    }
 
 		var file = req.file
 		var mysql = req.app.get('mysql');
