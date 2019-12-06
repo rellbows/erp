@@ -33,7 +33,8 @@
 	</table>
 
 	<h3>Create New User Account</h3>
-	<form name='create_user' action='/admin-crud-users' enctype="multipart/form-data" method='post'>
+
+	<form name='create_user' action='/admin-crud-users' method='post'>
 
 		First Name:<br>
 		<input type='text' name='first_name'><br>
@@ -51,9 +52,6 @@
 			<option value='{{dept_id}}'>{{dept_name}}</option>
 			{{/each}}
 		</select><br>
-
-		Signature:<br>
-		<input type='file' name='signature'></br>
 
 		<input type='submit' value="Create Account">
 	</form>

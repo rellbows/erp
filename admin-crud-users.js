@@ -1,8 +1,6 @@
 module.exports = function(){
 	var express = require('express');
 	var router = express.Router();
-	var multer = require('multer');
-	var upload = multer({dest: 'signatures'});
 
 	// SQL QUERIES
 
@@ -76,28 +74,15 @@ module.exports = function(){
 
 	});
 
-	var signature_upload = function(req, res, next){
-
-		//upload.single('signature');
-
-		// upload of sig file
-		var file = req.file;
-		if(!file){
-			var error = new Error('Please upload a file');
-			error.httpStatusCode = 400;
-			error.message = 'Error: Please upload a file'
-			return next(error);
-		}
-		req.body.signature_image_path = file.path;
-		next();
-	}
-
 	var create_user_sql = function(req, res, next){
 
 		var mysql = req.app.get('mysql');
 
 		// specify that it is standard user account
 		req.body.user_type = 'USER';
+
+		// sig file cannot be uploaded by admin
+		req.body.signature_image_path = 'NONE';
 
 		var sql = 'INSERT INTO user (first_name, last_name, email, password, department_id, user_type, signature_image_path) VALUES (?,?,?,?,?,?,?)';
 		var inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.department_id, req.body.user_type, req.body.signature_image_path];
@@ -113,7 +98,7 @@ module.exports = function(){
 	}
 
 	// create a user
-	router.post('/', upload.single('signature'), signature_upload, create_user_sql, function(req, res, next){
+	router.post('/', create_user_sql, function(req, res, next){
 
 		// check to ensure user is logged in...
 		if(req.user == undefined){
@@ -121,9 +106,6 @@ module.exports = function(){
 			res.end();
 	        return;
 	    }
-
-		// upload signature
-		req.signature_upload;
 
 		// call to mysql db to create user middleware
 		req.create_user_sql;
@@ -181,7 +163,7 @@ module.exports = function(){
 		};
 	});
 
-	router.post('/:id', upload.single('signature'), function(req, res){
+	router.post('/:id', function(req, res){
 
 		// check to ensure user is logged in...
 		if(req.user == undefined){
@@ -190,24 +172,12 @@ module.exports = function(){
 	        return;
 	    }
 
-		var file = req.file
 		var mysql = req.app.get('mysql');
 		var inserts = [];
-		var sql = '';
-		req.body.signature_image_path = '';
+		req.body.signature_image_path = 'NONE';
 
-		// no file upload
-		if(!file){
-			inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.department_id, req.params.id];
-			sql = 'UPDATE user SET first_name=?, last_name=?, email=?, password=?, department_id=? WHERE user_id=?';
-		}
-		// file upload
-		else{
-
-			req.body.signature_image_path = file.path;
-			inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.department_id, req.body.signature_image_path, req.params.id];
-			sql = 'UPDATE user SET first_name=?, last_name=?, email=?, password=?, department_id=?, signature_image_path=? WHERE user_id=?';
-		}
+		inserts = [req.body.first_name, req.body.last_name, req.body.email, req.body.password, req.body.department_id, req.params.id];
+		sql = 'UPDATE user SET first_name=?, last_name=?, email=?, password=?, department_id=? WHERE user_id=?';
 
 		sql = mysql.pool.query(sql, inserts, function(error, results, fields){
 			if(error){

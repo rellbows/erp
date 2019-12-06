@@ -3,7 +3,8 @@
 		<h1>Update {{user.first_name}} {{user.last_name}}</h1>
 	</div>
 
-	<form id='update_user' action='/admin-crud-users/{{user.user_id}}' enctype='multipart/form-data' method='post'>
+	<form id='update_user' action='/admin-crud-users/{{user.user_id}}' method='post'>
+
 		First Name:<br>
 		<input type='text' name='first_name' value='{{user.first_name}}'><br>
 		Last Name:<br>
@@ -20,8 +21,6 @@
 		</select><br>
 		Account Created:<br>
 		{{user.account_created}}<br>
-		Signature:<br>
-		<input type='file' name='signature'></br>
 
 		<input type='submit' value="Update Account">
 	</form>
